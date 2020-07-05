@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import Channel from './channel';
+import Channel from './components/Channel';
 import 'isomorphic-fetch'
 
 export async function getServerSideProps() {
@@ -60,7 +60,7 @@ function Home({ channels }) {
         body {
           margin: 0;
           background: white;
-          font-family: system-ui;
+          font-family: sans-serif;
         }
       `}</style>
     </>

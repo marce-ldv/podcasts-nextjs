@@ -4,11 +4,11 @@ import Link from 'next/link'
 const Channel = ({id, urls, title }) => {
   return (
     <>
-    <Link href={`/channel?id=${id}`}>
-      <div className="channel">
-        <img src={urls?.logo_image.original} alt={title} />
-        <h2>{title}</h2>
-      </div>
+      <Link href={`/channelDetails?id=${id}`}>
+        <div className="channel">
+          <img src={urls?.logo_image.original} alt={title} />
+          <h2>{title}</h2>
+        </div>
       </Link>
 
       <style jsx>{`
