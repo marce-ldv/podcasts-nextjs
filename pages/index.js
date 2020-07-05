@@ -1,4 +1,6 @@
 import Head from 'next/head'
+import Link from 'next/link'
+import Channel from './channel';
 import 'isomorphic-fetch'
 
 export async function getServerSideProps() {
@@ -14,11 +16,8 @@ function Home({ channels }) {
       <header>Podcasts nextjs</header>
 
       <div className="channels">
-        {channels.map(channel => (
-          <div className="channel">
-            <img src={channel.urls.logo_image.original} alt="" />
-            <h2>{channel.title}</h2>
-          </div>
+        {channels?.map(({id, urls, title}) => (
+          <Channel id={id} urls={urls} title={title} />
         ))}
       </div>
 
