@@ -8,31 +8,19 @@ export async function getServerSideProps() {
   return { props: { channels: channels } };
 }
 
-const Home = ({ channels }) => {
-  // console.log(channels)
+function Home({ channels }) {
   return (
-    <div className="container">
-      <Head>
-        <header>
-          <title>Podcasts Nextjs</title>
-          <link rel="icon" href="/favicon.ico" />
-        </header>
-      </Head>
+    <>
+      <header>Podcasts nextjs</header>
 
       <div className="channels">
-        {channels.map(({urls, title}) => (
+        {channels.map(channel => (
           <div className="channel">
-            <img src={urls.logo_image.original} alt={title} />
-            <h2>{title}</h2>
+            <img src={channel.urls.logo_image.original} alt="" />
+            <h2>{channel.title}</h2>
           </div>
         ))}
       </div>
-
-      <footer>
-        <a target="_blank" rel="noopener noreferrer">
-          Powered by Marcelo
-        </a>
-      </footer>
 
       <style jsx>{`
         header {
@@ -41,17 +29,31 @@ const Home = ({ channels }) => {
           padding: 15px;
           text-align: center;
         }
+
         .channels {
           display: grid;
           grid-gap: 15px;
           padding: 15px;
-          grid-template-columns: repeat(auto-fill, mixmax(160px, 1fr));
+          grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
         }
+
         .channel {
           display: block;
           border-radius: 3px;
-          box-shadow: 0px 2px 6px rgba(0,0,0,0.15);
+          box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
           margin-bottom: 0.5em;
+        }
+
+        .channel img {
+          width: 100%;
+        }
+
+        .channel h2 {
+          padding: 5px;
+          font-size: 0.9em;
+          font-weight: 600;
+          margin: 0;
+          text-align: center;
         }
       `}</style>
 
@@ -62,23 +64,8 @@ const Home = ({ channels }) => {
           font-family: system-ui;
         }
       `}</style>
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
-        }
-
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
-    </div>
-  )
+    </>
+  );
 }
 
 export default Home;
