@@ -1,16 +1,29 @@
 import React from 'react';
 import Link from 'next/link'
-import Button from './components/Button';
+import Button from './components/Button'
 
 export async function getServerSideProps({ query }) {
   let channelId = query.id;
-  let req = await fetch(`https://api.audioboom.com/channels/${channelId}`);
-  let { body: { channel } } = await req.json();
+  let [reqChannel, reqSeries, reqAudios] = await Promise.all([
+    await fetch(`https://api.audioboom.com/channels/${channelId}`),
+    await fetch(`https://api.audioboom.com/channels/${channelId}/child_channels`),
+    await fetch(`https://api.audioboom.com/channels/${channelId}/audio_clips`)
+  ])
 
-  return { props: { channel: channel } }; 
+  let dataChannel = await reqChannel.json()
+  let channel = dataChannel.body.channel
+  
+  let dataSeries = await reqSeries.json()
+  let series = dataSeries.body.channels
+
+  let dataAudios = await reqAudios.json()
+  let audioClips = dataAudios.body.audio_clips
+
+  return { props: { channel, series, audioClips } }; 
 }
 
-const ChannelDetails = ({ channel }) => {
+const ChannelDetails = ({ channel, series, audioClips }) => {
+  console.log(audioClips)
   return (
     <>
     <header>
@@ -26,6 +39,16 @@ const ChannelDetails = ({ channel }) => {
       </div>
       <div className="channel">
         <img src={channel.urls?.logo_image.original} alt={channel.title} />
+
+        <div className="audioClips">
+          <h2>Audio clips</h2>
+          {audioClips?.map(({title, duration}) => (
+            <>
+              <div>Title: {title}</div>
+              <div>Duration: {duration}</div>
+            </>
+          ))}
+        </div>
       </div>
     </main>
 
@@ -50,16 +73,12 @@ const ChannelDetails = ({ channel }) => {
           width: 50%;
         }
 
-        .channel h2 {
-          padding: 5px;
-          font-size: 0.9em;
-          font-weight: 600;
-          margin: 0;
-          text-align: center;
+        .channel {
+          color: green;
         }
       `}</style>
     </>
   )
 }
 
-export default ChannelDetails;
+export default ChannelDetails
